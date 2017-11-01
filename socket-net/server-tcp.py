@@ -18,6 +18,3 @@ while True:
 
 conn.close()  # 关闭连接对象
 s.close()  # 关闭服务器端socket
-
-
-

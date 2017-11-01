@@ -27,6 +27,9 @@ class OpenFileContextManager(object):
 
 @contextlib.contextmanager
 def timeout():
+    """
+    采用contextlib实现的上下文管理器中yield之前的代码相当于__enter__中需要执行的内容，__exit__中需要执行的内容相当于yield之后的。
+    """
     start_time = time.time()
     yield start_time  # yield之后的返回值可以作为with语句中as后变量所持有的句柄
     end_time = time.time()
