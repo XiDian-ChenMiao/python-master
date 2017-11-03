@@ -1,20 +1,30 @@
 # coding:utf-8
 import socket
+from tcp_authen import client_authen, server_authen
 HOST = '127.0.0.1'
 PORT = 5002
+SECRET_KEY = b'daqinzhidi'
 
-s = socket.socket()  # 创建socket
-s.bind((HOST, PORT))  # 绑定地址以及端口
-s.listen(5)  # 开启监听指定端口
+def echo_handler(client_sock):
+    if not server_authen(client_sock, SECRET_KEY):
+        client_sock.close()
+        return
+    while True:
+        msg = client_sock.recv(8192)
+        if not msg:
+            break
+        client_sock.sendall(msg)
 
-conn, addr = s.accept()  # 开始接收来自客户端的socket连接
-print('Client Address:', addr)
-while True:
-    data = conn.recv(1024)  # 接收客户端发送的数据
-    if not data:
-        break  # 如果没有再收到任何消息，则断开连接
-    print('Receive Data From Client:', data.decode('utf-8'))  # 打印接收到的数据
-    conn.send(data)  # 向客户端发送接收的数据
 
-conn.close()  # 关闭连接对象
-s.close()  # 关闭服务器端socket
+def echo_server(address):
+    s = socket.socket()  # 创建socket
+    s.bind((HOST, PORT))  # 绑定地址以及端口
+    s.listen(5)  # 开启监听指定端口
+    while True:
+        c, a = s.accept()
+        echo_handler(c)
+
+
+if __name__ == '__main__':
+    echo_server((HOST, PORT))
+

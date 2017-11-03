@@ -1,13 +1,14 @@
 # coding:utf-8
 import socket
-
+from tcp_authen import client_authen
 HOST = '127.0.0.1'
 PORT = 5002  # 与服务器端口相同
 
 s = socket.socket()  # 创建socket连接
-
+SECRET_KEY = b'daqinzhidi'
 try:
     s.connect((HOST, PORT))  # 连接服务器
+    client_authen(s, SECRET_KEY)
     data = 'Hello Server'
     while data:
         s.sendall(data.encode('utf-8'))  # 向服务器发送数据
