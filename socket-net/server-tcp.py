@@ -1,6 +1,6 @@
 # coding:utf-8
 import socket
-from tcp_authen import client_authen, server_authen
+from tcp_authen import server_authen
 HOST = '127.0.0.1'
 PORT = 5002
 SECRET_KEY = b'daqinzhidi'
