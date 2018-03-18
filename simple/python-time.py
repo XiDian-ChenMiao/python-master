@@ -55,6 +55,8 @@ def timestamptodatetime():
     print('当前时间戳转为时间为：', timearray.strftime('%Y-%m-%d %H:%M:%S'))
 
 if __name__ == '__main__':
+    print(time.ctime()) # 当前时间的字符串表示
+    print(time.time()) # 当前时间的小数数字表示
     transfer()
     formattime()
     stamptotime()
