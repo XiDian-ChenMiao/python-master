@@ -13,6 +13,16 @@ def log_getattribute(cls):
     cls.__getattribute__ = new_getattribute
     return cls
 
+def catch_exception(func):
+    def wrapper(self, *args, **kwargs):
+        try:
+            result = func(self, *args, **kwargs)
+            return result
+        except IOError:
+            self.revive()
+            return 'an exception raised'
+    return wrapper
+
 
 @log_getattribute
 class A(object):
@@ -31,6 +41,7 @@ class A(object):
             return func(*args, **kwargs)
         return decorate
 
+
 a = A()
 
 @a.decorator_self
@@ -40,3 +51,16 @@ def a():
 @A.decorate_cls
 def b():
     pass
+
+
+class B(object):
+    def revive(self):
+        print('revive from exception.')
+
+    @catch_exception
+    def read_value(self):
+        print('here read something')
+        raise IOError
+
+b = B()
+b.read_value()
