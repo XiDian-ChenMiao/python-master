@@ -4,6 +4,23 @@
 
 from functools import wraps
 
+
+def parametrized_short_repr(max_len=8):
+    """
+    通过装饰器对类名字进行长度限制
+    """
+    def parametrized(cls):
+        class ShortlyRepresented(cls):
+            def __repr__(self):
+                return super().__repr__()[:max_len]
+        return ShortlyRepresented
+    return parametrized
+
+
+@parametrized_short_repr(10)
+class LongestClassName(object):
+    pass
+
 def log_getattribute(cls):
     original_attrite = cls.__getattribute__
 
