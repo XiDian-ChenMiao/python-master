@@ -73,7 +73,7 @@ class HtmlDownloader(object):
             return
         user_agent = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
         headers = {'User-Agent': user_agent}
-        r = requests.get(url, headers=headers)
+        r = requests.get(url, headers=headers, verify=False)
         if r.status_code == 200:
             r.encoding = 'utf-8'
             return r.text
@@ -93,7 +93,7 @@ class HtmlParser(object):
         """
         if page_url is None or html_cont is None:
             return
-        soup = BeautifulSoup(html_cont, 'html.parser', from_encoding='utf-8')
+        soup = BeautifulSoup(html_cont, 'html.parser')
         new_urls = self._get_new_urls(page_url, soup)
         new_data = self._get_new_data(page_url, soup)
         return new_urls, new_data
@@ -106,7 +106,7 @@ class HtmlParser(object):
         :return: the new urls set need to download
         """
         new_urls = set()
-        links = soup.find_all('a', href=re.compile(r'/view/\d+.htm'))
+        links = soup.find_all('a', href=re.compile(r'/item/\w+'))
         for link in links:
             new_url = link['href']
             new_full_url = urljoin(page_url, new_url)
