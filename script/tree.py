@@ -32,6 +32,8 @@ def treeize(dir_abs_path, suffix_separator_cnt, tree_info, suffix='|    ', ignor
     :param suffix: the suffix string
     :param ignore_file_names: file names list which need to ignore
     """
+    if not os.path.exists(dir_abs_path):
+        return
     basename = os.path.basename(dir_abs_path)
     if ignore_file_names is not None:
         if basename in ignore_file_names:
